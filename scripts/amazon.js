@@ -46,7 +46,7 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}">
             Add to Cart
           </button>
         </div>
@@ -54,3 +54,26 @@ products.forEach((product) => {
 });
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+//https://chatgpt.com/c/ef977b25-8a9f-4d5f-9a58-29e65054c58a
+document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  button.addEventListener('click', () => {
+      const productId = button.dataset.productId;
+      let productFound = false;
+        
+     cart.forEach((value) => {
+      if(productId === value.productId) {
+        productFound = true;
+        value.quantity += 1;
+      }
+     });
+          
+     if(!productFound) {
+      cart.push({
+        productId: productId,
+        quantity: 1
+       });
+      }         
+    console.log(cart)
+    })
+})
