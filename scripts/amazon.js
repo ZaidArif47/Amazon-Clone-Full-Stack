@@ -25,7 +25,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -58,20 +58,22 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;
 //https://chatgpt.com/c/ef977b25-8a9f-4d5f-9a58-29e65054c58a
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
-      const productId = button.dataset.productId;
-      let productFound = false;
+     const productId = button.dataset.productId;
+     let productFound = false;
+
+     let productQuantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
         
      cart.forEach((value) => {
       if(productId === value.productId) {
         productFound = true;
-        value.quantity += 1;
+        value.quantity += productQuantity;
       }
      });
           
      if(!productFound) {
       cart.push({
         productId: productId,
-        quantity: 1
+        quantity: productQuantity
        });
       }      
      
