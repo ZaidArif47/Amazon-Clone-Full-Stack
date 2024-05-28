@@ -656,5 +656,38 @@ const products = [
       "apparel",
       "mens"
     ]
+  },
+
+  {
+    id: "ab3d5fg8-1211-333g-zx45-ab3d5fg8wxyz",
+    image: "images/products/umbrella.jpg",
+    name: "Large Synthetic Umbrella - Striped Gray",
+    rating: {
+      stars: 4,
+      count: 113
+    },
+    priceCents: 1050,
+    keywords: [
+      "Umbrella",
+      "Rain",
+      "Gray",
+      "Water Proof"
+    ]
+  },
+
+  {
+    id: "za9d5fg8-2311-323g-2x45-zd3d5fg8wxya",
+    image: "images/products/backpack.jpg",
+    name: "Backpack 35L - Black",
+    rating: {
+      stars: 5,
+      count: 24
+    },
+    priceCents: 1250,
+    keywords: [
+      "School Bag",
+      "Office Bag",
+      "Carrybag"
+    ]
   }
 ];
