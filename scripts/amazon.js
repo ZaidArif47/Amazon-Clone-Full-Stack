@@ -58,7 +58,8 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;
 //https://chatgpt.com/c/ef977b25-8a9f-4d5f-9a58-29e65054c58a
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
   button.addEventListener('click', () => {
-     const productId = button.dataset.productId;
+     //const productId = button.dataset.productId;
+     const { productId } = button.dataset;
      let productFound = false;
 
      let productQuantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
@@ -66,21 +67,21 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
      cart.forEach((value) => {
       if(productId === value.productId) {
         productFound = true;
-        value.quantity += productQuantity;
+        value.productQuantity += productQuantity;
       }
      });
           
      if(!productFound) {
       cart.push({
-        productId: productId,
-        quantity: productQuantity
+        productId, //shorthand property
+        productQuantity //shorthand property
        });
       }      
      
      let cartQuantity = 0;
 
      cart.forEach((value) => {
-      cartQuantity += value.quantity;
+      cartQuantity += value.productQuantity;
      })
 
      document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
