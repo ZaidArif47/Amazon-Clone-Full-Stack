@@ -6,7 +6,7 @@ let cartSummaryHTML = '';
 
 cart.forEach((cartItem) => {
 
-const productId = cartItem.id;
+const productId = cartItem.productId;
 
 let matchingProduct;
 
@@ -36,7 +36,7 @@ cartSummaryHTML+=
         </div>
         <div class="product-quantity">
             <span>
-            Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+            Quantity: <span class="quantity-label">${cartItem.productQuantity}</span>
             </span>
             <span class="update-quantity-link link-primary">
             Update
