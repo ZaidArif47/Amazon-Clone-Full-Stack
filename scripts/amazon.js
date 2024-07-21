@@ -69,6 +69,7 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML;
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
  }
 
+ updateCartQuantity();
 
 //https://chatgpt.com/c/ef977b25-8a9f-4d5f-9a58-29e65054c58a
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
