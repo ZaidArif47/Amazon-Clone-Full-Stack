@@ -47,4 +47,12 @@ export function addToCart(productId, productQuantity) {
     saveToStorage();
   };
 
-  
+  export function calculateCartQuantity() {
+  let cartQuantity = 0;
+
+  cart.forEach((value) => {
+   cartQuantity += value.productQuantity;
+  })
+
+  return cartQuantity;
+  }
