@@ -118,28 +118,46 @@ function updateCartQuantity() {
   document.querySelector('.js-return-to-home-link').innerHTML = `${cartQuantity} items`;
 }
 
+
 document.querySelectorAll('.update-quantity-link').
   forEach((updateLink) => {
     updateLink.addEventListener('click', () => {
         const productId = updateLink.dataset.productId;
         const productContainer = document.querySelector(`.js-cart-item-container-${productId}`);
         productContainer.classList.add('is-editing-quantity');
+
+        document.querySelector(`.js-product-input-${productId}`).
+         addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                saveQuantity(productId);
+            };
+         });
     });
   });
 
-  
+
   document.querySelectorAll('.js-save-link').
    forEach((saveLink) => {
     saveLink.addEventListener('click', () => {
         const productId = saveLink.dataset.productId;
-        const productContainer = document.querySelector(`.js-cart-item-container-${productId}`);
-        productContainer.classList.remove('is-editing-quantity');
-        
-        const quantityInput = document.querySelector(`.js-product-input-${productId}`);
-        const newQuantity = Number(quantityInput.value);
-        updateQuantity(productId, newQuantity);
-
-        document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
-        updateCartQuantity();
+        saveQuantity(productId);    
     });
    });
+
+
+   function saveQuantity(productId) {
+    const productContainer = document.querySelector(`.js-cart-item-container-${productId}`);
+    productContainer.classList.remove('is-editing-quantity');
+        
+    const quantityInput = document.querySelector(`.js-product-input-${productId}`);
+    const newQuantity = Number(quantityInput.value);
+        if (newQuantity <= 0 || newQuantity > 100) {
+            alert('Quantity must be at least 0 and less than 100');
+            return;
+        }
+
+    updateQuantity(productId, newQuantity);
+
+    document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
+    updateCartQuantity();
+   };
