@@ -1,4 +1,4 @@
-import { cart, deleteFromCart, calculateCartQuantity, updateQuantity } from "../data/cart.js";
+import { cart, deleteFromCart, calculateCartQuantity, updateQuantity, updateDeliveryOptions } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -91,7 +91,9 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
 
     html +=
     `
-    <div class="delivery-option">
+    <div class="delivery-option js-delivery-option"
+    data-product-id="${matchingProduct.id}"
+    data-delivery-option-id="${deliveryOption.id}">
             <input type="radio" ${isChecked}
             class="delivery-option-input"
             name="delivery-option-${matchingProduct.id}">
@@ -171,3 +173,12 @@ document.querySelectorAll('.update-quantity-link').
     document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
     updateCartQuantity();
    };
+
+
+   document.querySelectorAll('.js-delivery-option')
+    .forEach((element) => {
+        element.addEventListener('click', () => {
+            const {productId, deliveryOptionId} = element.dataset; //shorthand property
+            updateDeliveryOptions(productId, deliveryOptionId);
+        })
+    })
