@@ -1,9 +1,9 @@
 import { cart, deleteFromCart, calculateCartQuantity, updateQuantity, updateDeliveryOptions } from '../../data/cart.js'
-import { products } from '../../data/products.js';
+import { products, getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions } from '../../data/deliveryOptions.js';
-
+import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
 export function renderOrderSummary() {
 
@@ -15,21 +15,9 @@ export function renderOrderSummary() {
 
     const productId = cartItem.productId;
 
-    let matchingProduct;
+    let matchingProduct = getProduct(productId);
 
-    products.forEach(product => {
-        if(product.id === productId) {
-            matchingProduct = product;
-        } 
-    });
-
-    let deliveryOption; 
-
-    deliveryOptions.forEach((option) => {
-        if(option.id === cartItem.deliveryOptionId){
-            deliveryOption = option;
-        }
-    });
+    let deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
 
     let today = dayjs();
     let deliveryDate = today.add(deliveryOption.deliveryDays, 'Days');
@@ -125,6 +113,7 @@ export function renderOrderSummary() {
             const container = document.querySelector(`.js-cart-item-container-${itemId}`);
             container.remove();  //updating the HTML after deleting from Cart
             updateCartQuantity();
+            renderOrderSummary();
         });
     });
 
@@ -145,6 +134,7 @@ export function renderOrderSummary() {
             addEventListener('keypress', (event) => {
                 if (event.key === 'Enter') {
                     saveQuantity(productId);
+                    renderPaymentSummary();
                 };
             });
         });
@@ -186,4 +176,6 @@ export function renderOrderSummary() {
                 renderOrderSummary();
             })
         })
+
+        renderPaymentSummary();
 }
