@@ -86,6 +86,10 @@ export function addToCart(productId, productQuantity) {
         }
     });
 
+    if(!matchingItem) {
+        return;
+    }
+
     matchingItem.deliveryOptionId = deliveryOption;
 
     saveToStorage();
