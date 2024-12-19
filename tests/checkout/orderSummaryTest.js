@@ -1,5 +1,5 @@
 import { renderOrderSummary } from '../../scripts/checkout/orderSummary.js'
-import { loadFromStorage, cart } from '../../data/cart.js';
+import { cart } from '../../data/cart-class.js';
 
 describe('test suite: renderOrderSummary', () => {
 
@@ -11,29 +11,21 @@ describe('test suite: renderOrderSummary', () => {
     const productPrice2 = '$20.95';
 
     beforeEach(() => {
-        spyOn(localStorage, 'setItem');
-
         document.querySelector('.js-test-container').innerHTML=`
         <div class="js-order-summary"></div>
         <a class="js-return-to-home-link"></a>
         <div class="payment-summary"></div>
         `;
 
-        spyOn(localStorage, 'getItem').and.callFake(() => {
-            return JSON.stringify([
-                {
-                    productId: productId1,
-                    productQuantity: 2,
-                    deliveryOptionId: '1'
-                },
-                {
-                    productId: productId2,
-                    productQuantity: 1,
-                    deliveryOptionId: '2'
-                }
-            ]);
-        });
-        loadFromStorage();
+        cart.cartItems = [{
+            productId: productId1,
+            productQuantity: 2,
+            deliveryOptionId: '1'
+        }, {
+            productId: productId2,
+            productQuantity: 1,
+            deliveryOptionId: '2'
+        }];
 
         renderOrderSummary();
     });
@@ -62,8 +54,8 @@ describe('test suite: renderOrderSummary', () => {
         expect(document.querySelector(`.js-cart-item-container-${productId1}`)).toEqual(null);
         expect(document.querySelector(`.js-cart-item-container-${productId2}`)).not.toEqual(null);
 
-        expect(cart.length).toEqual(1);
-        expect(cart[0].productId).toEqual(productId2);     
+        expect(cart.cartItems.length).toEqual(1);
+        expect(cart.cartItems[0].productId).toEqual(productId2);     
 
         expect(document.querySelector(`.js-product-name-${productId2}`).innerText).toEqual(productName2);
         expect(document.querySelector(`.js-product-price-${productId2}`).innerText).toEqual(productPrice2);
@@ -73,8 +65,8 @@ describe('test suite: renderOrderSummary', () => {
         document.querySelector(`.js-delivery-option-${productId1}-3`).click();
         
         expect(document.querySelector(`.js-delivery-option-input-${productId1}-3`).checked).toEqual(true);
-        expect(cart.length).toEqual(2);
-        expect(cart[0].deliveryOptionId).toEqual('3');
+        expect(cart.cartItems.length).toEqual(2);
+        expect(cart.cartItems[0].deliveryOptionId).toEqual('3');
 
         expect(document.querySelector('.js-payment-summary-shipping').innerText).toContain('$14.98');
         expect(document.querySelector('.js-payment-summary-total').innerText).toContain('$63.50');

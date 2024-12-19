@@ -1,5 +1,5 @@
-import { cart, deleteFromCart, calculateCartQuantity, updateQuantity, updateDeliveryOptions } from '../../data/cart.js'
-import { products, getProduct } from '../../data/products.js';
+import { cart } from '../../data/cart-class.js';
+import { getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
@@ -11,7 +11,7 @@ export function renderOrderSummary() {
 
     let cartSummaryHTML = '';
 
-    cart.forEach((cartItem) => {
+    cart.cartItems.forEach((cartItem) => {
 
     const productId = cartItem.productId;
 
@@ -109,7 +109,7 @@ export function renderOrderSummary() {
     forEach((deleteLink) => {
         deleteLink.addEventListener('click', () => {
             const itemId = deleteLink.dataset.productId;
-            deleteFromCart(itemId);
+            cart.deleteFromCart(itemId);
             const container = document.querySelector(`.js-cart-item-container-${itemId}`);
             container.remove();  //updating the HTML after deleting from Cart
             updateCartQuantity();
@@ -118,7 +118,7 @@ export function renderOrderSummary() {
     });
 
     function updateCartQuantity() {
-    let cartQuantity = calculateCartQuantity();  
+    let cartQuantity = cart.calculateCartQuantity();  
     document.querySelector('.js-return-to-home-link').innerHTML = `${cartQuantity} items`;
     }
 
@@ -161,7 +161,7 @@ export function renderOrderSummary() {
                 return;
             }
 
-        updateQuantity(productId, newQuantity);
+        cart.updateQuantity(productId, newQuantity);
 
         document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
         updateCartQuantity();
@@ -172,7 +172,7 @@ export function renderOrderSummary() {
         .forEach((element) => {
             element.addEventListener('click', () => {
                 const {productId, deliveryOptionId} = element.dataset; //shorthand property
-                updateDeliveryOptions(productId, deliveryOptionId);
+                cart.updateDeliveryOptions(productId, deliveryOptionId);
                 renderOrderSummary();
             })
         })
