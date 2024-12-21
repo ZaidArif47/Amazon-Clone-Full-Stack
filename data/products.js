@@ -91,6 +91,7 @@ export function loadProducts(callbackFunc) {
         return new Product(productDetails);
       }
     });;    
+    console.log('load products')
     //callback function to run after response has loaded
     callbackFunc(); 
   });
