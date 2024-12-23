@@ -5,6 +5,34 @@ import { loadProductsFetch } from "../data/products.js";
 // import '../data/backend-practice.js';
 import { loadCart } from "../data/cart.js";
 
+/*
+async function loadPage() {
+    console.log('Load Page');   
+
+    await loadProductsFetch();
+
+    return 'testValue'; 
+}
+loadPage().then((value) => {
+    console.log('Next step from async');
+    console.log(value);
+})
+*/
+
+async function loadPage() {
+    await loadProductsFetch();
+
+    //loadCart - asynchronous & callback function - so wrap in a promise then await
+    await new Promise((resolve) => {
+        loadCart(resolve);
+    });
+
+    renderOrderSummary();
+    renderPaymentSummary();
+}
+loadPage();
+
+/*
 Promise.all([
     loadProductsFetch(),    
     
@@ -20,6 +48,7 @@ Promise.all([
     renderOrderSummary();
     renderPaymentSummary();
 });
+*/
 
 /*
 new Promise((resolve) => {
