@@ -1,6 +1,6 @@
 import { renderOrderSummary } from '../../scripts/checkout/orderSummary.js'
 import { cart } from '../../data/cart-class.js';
-import { loadProducts } from '../../data/products.js';
+import { loadProductsFetch } from '../../data/products.js';
 
 describe('test suite: renderOrderSummary', () => {
 
@@ -12,7 +12,7 @@ describe('test suite: renderOrderSummary', () => {
     const productPrice2 = '$20.95';
 
     beforeAll((done) => {
-        loadProducts(done);
+        loadProductsFetch().then(done);
     });
 
     beforeEach(() => {
