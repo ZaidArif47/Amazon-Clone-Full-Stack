@@ -96,7 +96,12 @@ export function loadProductsFetch() {
       }
     });
     console.log('load products using fetch')
-  });
+  })
+  
+  .catch((error) => {
+    console.log('Error. Please try again.')
+  })
+
   return promise;
 };
 
@@ -126,6 +131,10 @@ export function loadProducts(callbackFunc) {
     //callback function to run after response has loaded
     callbackFunc(); 
   });
+
+  xhr.addEventListener('error', (error) => {
+    console.log('Error. Please try again.');
+  })
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();
