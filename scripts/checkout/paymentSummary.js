@@ -2,6 +2,7 @@ import { cart } from "../../data/cart-class.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
     let allProductsPrice = 0;
@@ -52,10 +53,41 @@ export function renderPaymentSummary() {
     <div class="payment-summary-money">$${formatCurrency(totalPriceAfterTax)}</div>
     </div>
 
-    <button class="place-order-button button-primary">
+    <button class="place-order-button button-primary js-place-order-button">
     Place your order
     </button>
     `
 
     document.querySelector('.payment-summary').innerHTML = paymentSummaryHTML;
+
+    document.querySelector('.js-place-order-button').addEventListener('click', async () => {
+        try {
+            // Formatting cart items to match fetch API requirements (productQuantity → quantity)
+            const backendFormatCart = cart.cartItems.map((item) => ({
+                productId: item.productId,
+                quantity: item.productQuantity,
+                deliveryOptionId: item.deliveryOptionId
+            }));  
+            /* The outer parentheses () around {} ensure JavaScript knows it's returning an object directly
+            Without (), JavaScript might interpret {} as a block scope instead of an object literal */
+
+            const response = await fetch('https://supersimplebackend.dev/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cart: backendFormatCart
+                })
+            });
+    
+            const order = await response.json();
+            addOrder(order);
+
+        } catch(error) {
+            console.log('Fetch error:', error);
+        }             
+
+        window.location.href = 'orders.html';
+    });
 }
