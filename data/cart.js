@@ -95,14 +95,8 @@ export function addToCart(productId, productQuantity) {
     saveToStorage();
   }
 
-  export function loadCart(callbackFunc) {
-    let xhr = new XMLHttpRequest();
-    
-    xhr.addEventListener('load', () => {
-        console.log(xhr.response);
-        callbackFunc();
-    });
-
-    xhr.open('GET', 'https://supersimplebackend.dev/cart');
-    xhr.send();
+  export async function loadCartFetch() {
+    let response = await fetch('https://supersimplebackend.dev/cart');
+    let responseData = await response.text();
+    console.log(responseData);
   }
