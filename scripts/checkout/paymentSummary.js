@@ -87,7 +87,9 @@ export function renderPaymentSummary() {
         } catch(error) {
             console.log('Fetch error:', error);
         }             
-
+        
+        cart.cartItems = [];
+        cart.saveToStorage();
         window.location.href = 'orders.html';
     });
 }

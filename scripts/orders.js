@@ -2,6 +2,7 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { orders } from '../data/orders.js';
 import { formatCurrency } from './utils/money.js';
 import { getProduct, loadProductsFetch } from '../data/products.js';
+import { cart } from '../data/cart-class.js';
 
 export async function renderPage() {
     await loadProductsFetch();
@@ -85,5 +86,6 @@ export async function renderPage() {
     }
 
     document.querySelector('.js-orders-grid').innerHTML = orderGridHTML;
+    document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
 }
 renderPage();
