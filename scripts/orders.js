@@ -67,7 +67,7 @@ export async function renderPage() {
                   <div class="product-quantity">
                     Quantity: ${productDetails.quantity}
                   </div>
-                  <button class="buy-again-button button-primary">
+                  <button class="buy-again-button button-primary js-buy-again-button" data-product-id="${product.id}">
                     <img class="buy-again-icon" src="images/icons/buy-again.png">
                     <span class="buy-again-message">Buy it again</span>
                   </button>
@@ -87,5 +87,24 @@ export async function renderPage() {
 
     document.querySelector('.js-orders-grid').innerHTML = orderGridHTML;
     document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
+
+
+    document.querySelectorAll('.js-buy-again-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        cart.addToCart(button.dataset.productId);
+        button.innerHTML = `
+        <img src="images/icons/checkmark.png">Item Added
+        `;
+
+        setTimeout(() => {
+          button.innerHTML = `
+          <img class="buy-again-icon" src="images/icons/buy-again.png">
+          <span class="buy-again-message">Buy it again</span>
+          `;
+        }, 1000);
+        
+        document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
+      });
+    });
 }
 renderPage();
