@@ -20,6 +20,13 @@ async function loadTrackingPage() {
         }
     });
 
+    let orderTime = dayjs(matchingOrder.orderTime);
+    let deliveryTime = dayjs(matchingProduct.estimatedDeliveryTime);
+    let currentTime = dayjs();
+
+    let orderProgress = ((currentTime - orderTime) / (deliveryTime - orderTime)) * 100;
+    console.log(orderProgress);
+
     let html = `
         <a class="back-to-orders-link link-primary" href="orders.html">
         View all orders
@@ -40,23 +47,25 @@ async function loadTrackingPage() {
         <img class="product-image" src="${myProduct.image}">
 
         <div class="progress-labels-container">
-        <div class="progress-label">
+        <div class="progress-label status-preparing ${(orderProgress < 50) ? 'current-status' : '' }">
             Preparing
         </div>
-        <div class="progress-label current-status">
+        <div class="progress-label ${(orderProgress >= 50 && orderProgress < 100) ? 'current-status' : '' }">
             Shipped
         </div>
-        <div class="progress-label">
+        <div class="progress-label ${(orderProgress >= 100) ? 'current-status' : '' }">
             Delivered
         </div>
         </div>
 
         <div class="progress-bar-container">
-        <div class="progress-bar"></div>
+        <div class="progress-bar js-progress-bar"></div>
         </div>
     `;
     
     document.querySelector('.js-order-tracking').innerHTML = html;
     document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
+
+    document.querySelector('.js-progress-bar').style.width = `${orderProgress}%`;
 };
 loadTrackingPage();
