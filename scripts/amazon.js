@@ -13,10 +13,16 @@ function renderProductGrid() {
 
   if(searchQuery) {
     document.querySelector('.js-search-bar').value = searchQuery;
-    
+
     // If a searchQuery exists in the URL parameters, filter the products that match the search.
     filteredProducts = products.filter((value) => {
-      return value.name.includes(searchQuery);
+      let matchingKeyword = false;
+      value.keywords.forEach((keyword) => {
+        if(keyword.toLowerCase().includes(searchQuery.toLowerCase())) {
+          matchingKeyword = true;
+        };
+      });
+      return matchingKeyword || value.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
   }
 
